@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { AnimatedRollingNumber } from "react-native-animated-rolling-numbers";
 import { Easing } from 'react-native-reanimated';
 import axios from 'axios';
-import SlotText from 'react-native-slot-numbers';
+import ProgressBar from 'react-native-progress/Bar';
 
 
 const index = () => {
@@ -29,11 +29,14 @@ const index = () => {
   }, [value.blockNumber]);
 
 const getData = () => {
-    axios.get('https://api.solanabeach.io/v1/latest-blocks',
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+    const bearerToken = process.env.EXPO_PUBLIC_BEARER_TOKEN;
+
+    axios.get(`${apiUrl}latest-blocks`,
     {
         headers: {
             'Content-Type': 'application/json',
-            "Authorization": 'b45ba62c-36a4-47e7-b738-d3b0d83b64d0'
+            "Authorization": `${bearerToken}`,
         }
     }
     )
@@ -52,7 +55,9 @@ const getData = () => {
     <ImageBackground source={require('../assets/images/background.png')} resizeMode='repeat' style={{ flex: 1, backgroundColor:'#262626' }}>
     <View style={styles.overlay} />
     <ScrollView style={{flex: 1}} contentContainerStyle={{flexGrow: 1,justifyContent: 'center', alignItems: 'center'}}>
-        <View style={{padding:20,paddingHorizontal:40,maxWidth:380,maxHeight:400,backgroundColor:theme.colors.background,justifyContent:"center",alignItems:"center",borderRadius:8,gap:5 }}>
+        <View style={{padding:30,paddingHorizontal:45,maxWidth:380,maxHeight:400,backgroundColor:theme.colors.background,justifyContent:"center",alignItems:"center",borderRadius:8,gap:40}}>
+        {/* slot height */}
+        <View>
         <Text style={{color:theme.colors.text,fontFamily:"Liberation Mono",fontWeight:"400"}}>Slot height</Text>
     <AnimatedRollingNumber
         value={value.blockNumber}
@@ -61,7 +66,9 @@ const getData = () => {
         textStyle={[styles.digits,{color: theme.colors.primary}]}
         spinningAnimationConfig={{ duration: 500, easing: Easing.bounce }}
       />
+      </View>
       {/* block time */}
+      <View>
        <Text style={{color:theme.colors.text,fontFamily:"Liberation Mono",fontWeight:"400"}}>Current Slot Time</Text>
        <View style={{flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
     <AnimatedRollingNumber
@@ -69,9 +76,32 @@ const getData = () => {
         textStyle={[styles.digits,{color: theme.colors.primary}]}
         spinningAnimationConfig={{ duration: 500, easing: Easing.bounce }}
       />
-      <Text style={[styles.digits,{color: theme.colors.primary,fontSize:25,opacity:0.5}]}>S</Text>
+      <Text style={[styles.digits,{color: theme.colors.primary,fontSize:20,opacity:0.5,bottom:-4}]}>S</Text>
+      </View>
       </View>
         {/* epoch */}
+        <View style={{gap:0}}>
+        <Text style={{color:theme.colors.text,fontFamily:"Liberation Mono",fontWeight:"400"}}>Epoch</Text>
+        <View style={{flexDirection:"row",justifyContent:"center",alignItems:"center", gap:5}}>
+        <Text style={[styles.progress_bar_side_text,{color:theme.colors.primary}]}>
+        764
+            </Text>
+            <View>
+<View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginBottom:2}}>
+    <Text style={[styles.progress_bar_top_text,{color:theme.colors.primary}]}>
+        45%
+    </Text>
+    <Text style={[styles.progress_bar_top_text,{color:theme.colors.primary}]}>
+        ETA 1d 2h
+    </Text>
+</View>
+        <ProgressBar color={theme.colors.primary} progress={0.3} width={150} height={8} borderRadius={30}/>
+        </View>
+        <Text style={[styles.progress_bar_side_text,{color:'gray'}]}>
+        765
+            </Text>
+        </View>
+      </View>
        </View>
     </ScrollView>
     </ImageBackground>
@@ -87,10 +117,25 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   digits: {
-    fontSize: 32,
+    fontSize: 35,
     fontWeight: "700",
     fontFamily:"Helvetica Neue",
     paddingHorizontal: 2,
+    letterSpacing:3
    
   },
+  progress_bar_top_text: {
+    fontSize: 12,
+    color: 'white',
+    fontFamily: 'Helvetica Neue',
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },   
+  progress_bar_side_text: {
+    fontSize: 35,
+    color: 'white',
+    fontFamily: 'Helvetica Neue',
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  }, 
 })
