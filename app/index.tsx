@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { AnimatedRollingNumber } from "react-native-animated-rolling-numbers";
 import { Easing } from 'react-native-reanimated';
 import axios from 'axios';
+// @ts-ignore 
 import ProgressBar from 'react-native-progress/Bar';
 
 
