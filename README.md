@@ -1,6 +1,9 @@
 # Welcome to your Solana-Beach-Explorer 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Your task is to build a dashboard for a mobile application for a block explorer. The app will
+consume blockchain-related data from a REST API and display it in a user-friendly way. The
+primary focus is crafting an engaging UI/UX, so design and usability will be as important as the
+data integration.
 
 ## Get started
 
